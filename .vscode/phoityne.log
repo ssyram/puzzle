@@ -1,0 +1,35 @@
+2021-11-30 23:15:47.487616000000 [21985(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2021-11-30 23:16:42.441027000000 [22036(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2021-11-30 23:20:42.608362000000 [22267(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2021-11-30 23:23:50.046294000000 [22476(ThreadId 17)] ERROR APP - <file descriptor: 69>: hPutChar: resource vanished (Broken pipe)
+2021-11-30 23:23:50.099814000000 [22476(ThreadId 17)] ERROR APP - <file descriptor: 69>: hPutChar: resource vanished (Broken pipe)
+2021-11-30 23:23:50.289100000000 [22476(ThreadId 17)] ERROR APP - <file descriptor: 69>: hPutChar: resource vanished (Broken pipe)
+2021-11-30 23:23:50.367691000000 [22476(ThreadId 17)] ERROR APP - <file descriptor: 69>: hPutChar: resource vanished (Broken pipe)
+2021-11-30 23:23:50.896942000000 [22476(ThreadId 17)] CRITICAL APP - <file descriptor: 69>: hPutChar: resource vanished (Broken pipe)
+2022-03-09 15:57:58.908103000000 [30381(ThreadId 17)] ERROR APP - [CRITICAL] can not get the initial ghci prompt.
+2023-05-13 11:07:16.256874000000 [83148(ThreadId 17)] ERROR APP - [CRITICAL] can not get the initial ghci prompt.
+2023-05-13 11:08:06.090119000000 [84040(ThreadId 17)] ERROR APP - [CRITICAL] can not get the initial ghci prompt.
+2023-05-13 11:08:40.981889000000 [84062(ThreadId 17)] ERROR APP - [CRITICAL] can not get the initial ghci prompt.
+2023-05-13 11:09:16.742046000000 [84086(ThreadId 17)] ERROR APP - [CRITICAL] can not get the initial ghci prompt.
+2023-05-13 11:09:49.877101000000 [84110(ThreadId 17)] ERROR APP - [CRITICAL] can not get the initial ghci prompt.
+2023-05-13 11:10:55.156329000000 [84140(ThreadId 17)] ERROR APP - [CRITICAL] can not get the initial ghci prompt.
+2023-05-13 11:14:47.566109000000 [84226(ThreadId 17)] ERROR APP - [CRITICAL] can not get the initial ghci prompt.
+2023-05-13 11:18:00.619193000000 [84625(ThreadId 17)] ERROR APP - [CRITICAL] can not get the initial ghci prompt.
+2023-05-13 11:18:19.964010000000 [84643(ThreadId 17)] ERROR APP - [CRITICAL] can not get the initial ghci prompt.
+2023-05-13 11:22:49.212372000000 [84738(ThreadId 17)] ERROR APP - [CRITICAL] can not get the initial ghci prompt.
+2023-05-13 11:25:12.946374000000 [85600(ThreadId 17)] ERROR APP - [CRITICAL] can not get the initial ghci prompt.
+2023-05-13 11:27:08.970254000000 [85651(ThreadId 17)] ERROR APP - [CRITICAL] can not get the initial ghci prompt.
+2023-05-13 11:44:24.009109000000 [16980(ThreadId 17)] ERROR APP - [CRITICAL] can not get the initial ghci prompt.
+2023-05-13 11:44:24.015243000000 [16980(ThreadId 17)] WARNING APP - InitState TerminateRequest (TerminateRequest {seqTerminateRequest = 3, typeTerminateRequest = "request", commandTerminateRequest = "terminate", argumentsTerminateRequest = Just (TerminateArguments {restartTerminateRequestArguments = Just False})}) not supported. nop.
+2023-05-13 11:44:53.147342000000 [17223(ThreadId 17)] ERROR APP - [CRITICAL] can not get the initial ghci prompt.
+2023-05-13 11:46:49.133160000000 [18442(ThreadId 17)] ERROR APP - [CRITICAL] can not get the initial ghci prompt.
+2023-05-13 11:48:03.393792000000 [18700(ThreadId 17)] ERROR APP - [CRITICAL] can not get the initial ghci prompt.
+2023-05-13 12:00:53.016028000000 [47481(ThreadId 17)] ERROR APP - [CRITICAL] can not get the initial ghci prompt.
+2023-05-13 12:10:14.447758000000 [52912(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2023-05-13 12:10:56.771060000000 [53177(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2023-05-13 12:11:51.235748000000 [53441(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2023-05-13 12:17:50.453750000000 [53760(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2023-05-13 12:19:57.886979000000 [54294(ThreadId 17)] ERROR APP - user error (no stacktrace found.)
+2023-05-13 12:19:57.929574000000 [54294(ThreadId 17)] ERROR APP - user error (no stacktrace found.)
+2023-05-13 12:20:01.171359000000 [54294(ThreadId 17)] ERROR APP - user error (ExecResult not found.)
+2023-05-13 15:18:45.108055000000 [64692(ThreadId 17)] ERROR APP - [CRITICAL] can not get the initial ghci prompt.
