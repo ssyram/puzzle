@@ -1,4 +1,5 @@
 {-# LANGUAGE BangPatterns #-}
+{-# LANGUAGE FlexibleContexts #-}
 module MyData.Vector (
   Vector,
   new,
@@ -8,13 +9,17 @@ module MyData.Vector (
   readAt,
   pushBack,
   enlarge,
-  insertAt
+  insertAt,
+  toList,
+  fromList
 ) where
 
 import Control.Monad.ST
 import Data.Array.ST
 import Data.STRef
 import Control.Monad
+import Data.Maybe (maybeToList)
+import Utils (Modifiable(readRef))
 
 -- | The ST version of a mutable vector, capable of automatically managing size
 data Vector s e = Vector {
@@ -32,16 +37,16 @@ len vec = do
 new :: ST s (Vector s e)
 new = newVector_ 32
 
-newWithSize :: e -> Integer -> ST s (Vector s e)
+newWithSize :: Integral i => e -> i -> ST s (Vector s e)
 newWithSize initVal size
   | size < 0 = newWithSize initVal 0
   | otherwise = do
-    arr <- newVector_ (size + 32)
-    writeSTRef (lenVec arr) size
-    writeAll arr initVal 0 size
+    arr <- newVector_ (fromIntegral size + 32)
+    writeSTRef (lenVec arr) $ fromIntegral size
+    writeAll arr initVal 0 $ fromIntegral size
     return arr
-    
-writeAll :: Vector s t -> t -> Integer -> Integer -> ST s ()
+
+writeAll :: Integral i => Vector s t -> t -> i -> i -> ST s ()
 writeAll vec initVal pos len
   | pos >= len = return ()
   | otherwise  = do
@@ -56,9 +61,9 @@ newVector_ capacity = do
   capVec <- newSTRef capacity :: ST s (STRef s Integer)
   return $ Vector valVec lenVec capVec
 
-autoResizeVecCap :: Vector s e -> ST s ()
-autoResizeVecCap vec =
-  resizeVecCap vec . (+32) =<< readSTRef (capVec vec)
+-- autoResizeVecCap :: Vector s e -> ST s ()
+-- autoResizeVecCap vec =
+--   resizeVecCap vec . (+32) =<< readSTRef (capVec vec)
 
 -- | Enlarge the given `vec` by writing the `defaultVal` for the `additionalSize`.
 enlarge :: Vector s e -> e -> Integer -> ST s ()
@@ -104,25 +109,26 @@ pushBack vec v = do
   writeArray arr l $ Just v
   writeSTRef (lenVec vec) $ l + 1
 
-readAt :: Vector s a -> Integer -> ST s (Maybe a)
+readAt :: Integral i => Vector s a -> i -> ST s (Maybe a)
 readAt vec idx = do
   !lenv <- readSTRef $ lenVec vec
-  if lenv <= idx || idx < 0 then return Nothing
+  if lenv <= fromIntegral idx || idx < 0 then return Nothing
   else do
     arr <- readSTRef (valVec vec)
-    ele <- readArray arr idx
+    ele <- readArray arr $ fromIntegral idx
     case ele of
-      Nothing -> error $ "Read Undefined Value, at position " ++ show idx ++ "."
+      Nothing -> error $ "Read Undefined Value, at position " ++ show (fromIntegral idx) ++ "."
       Just e  -> return $ Just e
 
 -- | returns whether write succeeded
 --   may fail to write iff it is out of the bound of length
-writeAt :: Vector s e -> Integer -> e -> ST s Bool
+writeAt :: Integral i => Vector s e -> i -> e -> ST s Bool
 writeAt vec idx val = do
+  idx <- return $ fromIntegral idx
   !lenv <- readSTRef $ lenVec vec
   if lenv <= idx || idx < 0 then return False
   else do
-    arr <- readSTRef (valVec vec) 
+    arr <- readSTRef (valVec vec)
     writeArray arr idx (Just val)
     return True
 
@@ -140,3 +146,20 @@ insertAt vec idx val = do
     writeArray arr idx $ Just val
     modifySTRef (lenVec vec) (+1)
     return True
+
+fromList :: [a] -> ST s (Vector s a)
+fromList lst = do
+  let len = length lst
+  v <- newVector_ $ fromIntegral len
+  forM_ lst $ pushBack v
+  return v
+
+collect :: (t -> Maybe b) -> [t] -> [b]
+collect f lst = do
+  x <- lst
+  maybeToList $ f x
+
+toList :: Vector s b -> ST s [b]
+toList v = do
+  v <- readRef $ valVec v
+  collect id <$> getElems v

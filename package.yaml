@@ -46,6 +46,7 @@ dependencies:
 - megaparsec
 - filepath
 - directory
+- monad-st
 
 library:
   source-dirs: src

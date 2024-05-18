@@ -1,10 +1,9 @@
 module Spec where
 
-import ShortStuff
+import NewShortStuff
 
 main :: IO ()
 main = do
-  let res = zAlgorithm "aaaabaaaa" "aab"
-  putStrLn $ "Result: " ++ show res
+  print $ manacherPalindrome [1,2,1,2]
   -- some <- return 1
   -- putStrLn $ "Test suite not yet implemented" ++ show some

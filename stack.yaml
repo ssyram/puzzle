@@ -37,6 +37,7 @@ extra-deps:
 - logict-0.7.1.0
 - sci-ratio-0.2.1.0
 - megaparsec-9.5.0
+- monad-st-0.2.4.1
 # - sbv-8.9
 # - array-0.5.4.0
 # - containers-0.6.5.1

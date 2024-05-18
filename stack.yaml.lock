@@ -46,6 +46,13 @@ packages:
       sha256: 337c06a763526ccddedc321625b90a09bc3a9a4dce135b20892c3b98f8f7a9f8
   original:
     hackage: megaparsec-9.5.0
+- completed:
+    hackage: monad-st-0.2.4.1@sha256:cabbabb81b5f28a460937b1d224741060b63782cfc6d0f819d36860291026b05,926
+    pantry-tree:
+      size: 269
+      sha256: e0c0c2fa5940379c4b3901a71ad235df7ef17492f4bf3f27c2a1ea555e2da804
+  original:
+    hackage: monad-st-0.2.4.1
 snapshots:
 - completed:
     size: 590100
