@@ -1050,10 +1050,9 @@ nQueens n = do
           -- first, test if this position is OK
           if test toTest then iter (toTest : record) (m + 1) res
           else res
-          where
-            test pos =
-              pos `notElem` record &&
-              and [m + pos /= i + v && m + n - pos /= i + n - v | (i, v) <- zip [1..m - 1] $ reverse record]
+        test pos =
+          pos `notElem` record &&
+          and [m + pos /= i + v && m + n - pos /= i + n - v | (i, v) <- zip [1..m - 1] $ reverse record]
 
 
 -- =================================== Spiral Order =================================
@@ -1234,7 +1233,7 @@ scrambleStrings str =
 
 correctIsScrambleString :: String -> String -> Bool
 correctIsScrambleString s str =
-  length s == length str && (s `elem` scrambleStrings str)
+  length s == length str && (s `elem` Set.fromList (scrambleStrings str))
 
 {-| Ideas on a quicker implementation
 

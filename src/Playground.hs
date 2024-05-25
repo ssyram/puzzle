@@ -29,6 +29,13 @@ import Data.Char (isDigit)
 import Text.Read (readMaybe)
 import qualified Test.QuickCheck.Gen
 import WorkingTest (lst)
+import Control.Monad.IO.Class (MonadIO(..))
+import Control.Monad.Trans.Class (MonadTrans(..))
+import Control.Monad.Cont (MonadCont(..))
+import Control.Monad.Trans.Cont hiding (callCC)
+import qualified Control.Monad.Logic as L
+import Control.Monad.Reader.Class (MonadReader (..))
+import qualified DataStructure.RBTree as RBT
 
 -- | Toy to find the first letter that is NOT mentioned in the given word
 firstLetterNotIn :: String -> Maybe Char
@@ -426,3 +433,47 @@ diffSets m n
       let rest = do lst <- recAdd m lst; return (hd:lst) in
       ((m:hd):lst) : rest
 
+testShift :: IO ()
+testShift = evalContT $ do
+  i <- resetT $ do
+    i <- tryCallShift
+    return $ i + 1
+  liftIO $ putStrLn $ "Ending with return " ++ show i
+  where
+    tryCallShift = do
+      shiftT $ \rest -> do
+        liftIO $ putStrLn "start shifting"
+        i <- lift $ rest 1
+        liftIO $ putStrLn "end shifting"
+        return i
+
+testContT :: IO ()
+testContT = do
+  res <- evalContT $ do
+    res <- callCC $ \ret -> do
+      liftIO $ putStrLn "Start"
+      -- resetT $ do
+      shiftT $ \rest -> do
+        liftIO $ putStrLn "Start shifting"
+        res <- lift $ rest ()
+        -- ret $ res + 1
+        liftIO $ putStrLn $ "End shifting, obtained result: " ++ show res
+        return 100
+        -- ret 1000
+      ret 1
+      liftIO $ putStrLn "Normal End"
+      return 10
+    liftIO $ putStrLn $ "Outside callCC: " ++ show res
+    return res
+  putStrLn $ "Final Result: " ++ show res
+
+testContT2 :: IO ()
+testContT2 = do
+  res <- evalContT $ do
+    res <- callCC $ \(ret :: Int -> ContT Int IO ()) -> do
+      resetT $ do ret 100; liftIO $ putStrLn "In reset"; return 10
+      ret 1
+      return 0
+    liftIO $ putStrLn $ "Outside callCC result: " ++ show res
+    return $ res + 1
+  putStrLn $ "Final Result: " ++ show res

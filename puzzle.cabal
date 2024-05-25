@@ -28,6 +28,9 @@ library
       BranchingTime
       Calculator
       Category
+      DataStructure.AVLTree
+      DataStructure.ClassSet
+      DataStructure.RBTree
       DifImpl.Class
       DifImpl.Impl1
       DifImpl.Impl2
@@ -57,6 +60,7 @@ library
       ProgHelper
       RptsaHelper
       SarHelper
+      ShortestPath
       ShortStuff
       SimpleAutomata
       SimpleRegularLanguage

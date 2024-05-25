@@ -17,6 +17,8 @@ codes = do
 choose :: (Foldable t, Alternative f) => t a -> f a
 choose = foldr ((<|>) . pure) empty
 
+fromList lst = msum $ fmap return lst
+
 -- | A List implementation of the validCodes -- which should give us directly the result
 --   In this case, using `Logic` and `List` are mostly the same -- the better performance
 --   provided by the `Logic` Monad seems not used here.

@@ -111,6 +111,10 @@ callCC :: ((forall b. a -> ContT r m b) -> ContT r m a) -> ContT r m a
 callCC f = ContT $ \cf ->
   runContT (f $ \a -> ContT $ \_ -> cf a) cf
 
+instance MonadTrans (MyContT' r) where
+  lift ma = MyContT' (ma >>=)
+
+
 -- | Now, the bounded `return` function is a TRUE `return` function in the sense of C language
 --   Usually use the name `exit` to distinguish
 -- >>> evalCont exampleCallCC
@@ -286,6 +290,49 @@ instance Monad m => Monad (MyContT m) where
 instance MonadTrans MyContT where
   lift :: Monad m => m a -> MyContT m a
   lift ma = MyContT ma
+
+newtype MyContT' r m a = MyContT' { runMyContT' :: (a -> m r) -> m r }
+
+instance Functor (MyContT' r m) where
+  fmap :: (a -> b) -> MyContT' r m a -> MyContT' r m b
+  fmap fab (MyContT' f) = MyContT' $ \rest -> f $ \a -> rest $ fab a
+
+instance Applicative (MyContT' r m) where
+  pure a = MyContT' ($a)
+  (<*>) = ap
+
+{-
+
+(ContT x) >>= f >>= g >>= h >>= k
+
+(ContT $ \rest -> x $ \a -> runContT (f a) rest) >>= g >>= h >>= k
+
+(ContT $ \rest -> x $ \a -> runContT (f a) $ \b -> runContT (g b) rest)
+
+...
+
+(ContT $ \rest -> x $ \a -> run (f a) $ \b -> run (g b) $ \c -> run (h c) $ \d -> run (k d) rest)
+
+-}
+instance Monad (MyContT' r m) where
+  (>>=) :: MyContT' r m a -> (a -> MyContT' r m b) -> MyContT' r m b
+  (MyContT' g) >>= f = MyContT' $ \rest ->
+    g $ \a ->
+      let rest' = runMyContT' $ f a in
+      rest' rest
+
+evalMyContT' :: Monad m => MyContT' r m r -> m r
+evalMyContT' (MyContT' f) = f return
+
+resetT' :: Monad m => MyContT' a m a -> MyContT' r m a
+resetT' myContT' = MyContT' (evalMyContT' myContT' >>=)
+
+shiftT' :: Monad m => ((a -> m r) -> MyContT' r m r) -> MyContT' r m a
+shiftT' f = MyContT' $ \rest -> evalMyContT' $ f rest
+
+callCC' :: ((forall b.a -> MyContT' r m b) -> MyContT' r m a) -> MyContT' r m a
+callCC' f = MyContT' $ \rest -> do
+  runMyContT' (f $ \r -> MyContT' $ \_ -> rest r) rest
 
 testShow :: String
 testShow = runCont (return 10 :: forall r. Cont r Int) show

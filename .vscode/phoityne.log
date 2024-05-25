@@ -39,3 +39,12 @@
 2024-05-14 19:01:03.701110000000 [51614(ThreadId 17)] ERROR APP - user error (no stacktrace found.)
 2024-05-14 19:01:03.741820000000 [51614(ThreadId 17)] ERROR APP - user error (no stacktrace found.)
 2024-05-14 19:02:08.196753000000 [55134(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2024-05-19 15:56:37.508875000000 [15885(ThreadId 17)] ERROR APP - user error (no stacktrace found.)
+2024-05-19 15:56:37.555611000000 [15885(ThreadId 17)] ERROR APP - user error (no stacktrace found.)
+2024-05-19 15:56:39.271838000000 [15885(ThreadId 17)] ERROR APP - user error (ExecResult not found.)
+2024-05-19 15:56:40.129079000000 [15885(ThreadId 17)] ERROR APP - user error (ExecResult not found.)
+2024-05-22 22:19:38.298364000000 [88956(ThreadId 17)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
+2024-05-24 21:36:46.270468000000 [29692(ThreadId 17)] ERROR APP - user error (<getModule> loaded module can not find from path. </Users/ssyram/workspace/haskell/puzzle/src/DataStructure.hs> [("MyData.Array","/Users/ssyram/workspace/haskell/puzzle/src/MyData/Array.hs"),("MyData.Vector","/Users/ssyram/workspace/haskell/puzzle/src/MyData/Vector.hs"),("NewShortStuff","/Users/ssyram/workspace/haskell/puzzle/src/NewShortStuff.hs"),("ShortStuff","/Users/ssyram/workspace/haskell/puzzle/src/ShortStuff.hs"),("Spec","/Users/ssyram/workspace/haskell/puzzle/test/Spec.hs"),("Utils","/Users/ssyram/workspace/haskell/puzzle/src/Utils.hs"),("WorkingTest","/Users/ssyram/workspace/haskell/puzzle/src/WorkingTest.hs")])
+2024-05-24 21:37:02.672461000000 [29692(ThreadId 17)] ERROR APP - user error (no stacktrace found.)
+2024-05-24 21:37:02.715285000000 [29692(ThreadId 17)] ERROR APP - user error (no stacktrace found.)
+2024-05-24 21:37:25.333525000000 [32301(ThreadId 17)] ERROR APP - user error (<getModule> loaded module can not find from path. </Users/ssyram/workspace/haskell/puzzle/src/DataStructure.hs> [("MyData.Array","/Users/ssyram/workspace/haskell/puzzle/src/MyData/Array.hs"),("MyData.Vector","/Users/ssyram/workspace/haskell/puzzle/src/MyData/Vector.hs"),("NewShortStuff","/Users/ssyram/workspace/haskell/puzzle/src/NewShortStuff.hs"),("ShortStuff","/Users/ssyram/workspace/haskell/puzzle/src/ShortStuff.hs"),("Spec","/Users/ssyram/workspace/haskell/puzzle/test/Spec.hs"),("Utils","/Users/ssyram/workspace/haskell/puzzle/src/Utils.hs"),("WorkingTest","/Users/ssyram/workspace/haskell/puzzle/src/WorkingTest.hs")])

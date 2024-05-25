@@ -25,6 +25,7 @@ import Debug.Trace (trace, traceM, traceShow, traceShowM)
 import Data.Maybe (catMaybes, mapMaybe, fromMaybe)
 import GHC.Real (Ratio((:%)))
 import GHC.Exts (IsList)
+import Control.Monad.Trans.Maybe (MaybeT (..))
 
 {-| Take a slice from the given string
 
@@ -172,6 +173,12 @@ whenM cond body = do
   val <- cond
   when val body
 
+orM :: (Foldable t, Monad m) => t (m Bool) -> m Bool
+orM = foldM (fmap . (||)) False
+
+andM :: (Foldable t, Monad m) => t (m Bool) -> m Bool
+andM = foldM (fmap . (&&)) True
+
 -- | empty or just a list of [] is also a valid matrix
 isMatrix :: [[a]] -> Bool
 isMatrix matrix =
@@ -239,6 +246,11 @@ class (Monad m) => Modifiable m r | m -> r where
   modifyRef ref f = do
     v <- readRef ref
     writeRef ref $ f v
+
+-- instance (Monad m, MonadTrans t, Monad (t m), Modifiable m r) => Modifiable (t m) r where
+--   newRef = lift . newRef
+--   readRef = lift . readRef
+--   writeRef ra a = lift $ writeRef ra a
 
 infix 0 <<-
 -- | The infix synonym of `writeRef`
@@ -457,3 +469,23 @@ allCombinations (x : l) =
 cartesianProduct :: [[a]] -> [[a]]
 cartesianProduct [] = [[]]
 cartesianProduct (x:xs) = [ y:ys | y <- x, ys <- cartesianProduct xs ]
+
+class MonadMaybe m where
+  just :: a -> m a
+  nothing :: m a
+
+instance MonadMaybe Maybe where
+  just = Just
+  nothing = Nothing
+
+instance Monad m => MonadMaybe (MaybeT m) where
+  just :: Monad m => a -> MaybeT m a
+  just a = MaybeT $ return $ Just a
+  nothing :: Monad m => MaybeT m a
+  nothing = MaybeT $ return Nothing
+
+instance (MonadTrans t, Monad m, MonadMaybe m) => MonadMaybe (t m) where
+  just :: (MonadTrans t, Monad m, MonadMaybe m) => a -> t m a
+  just a = lift $ just a
+  nothing :: (MonadTrans t, Monad m, MonadMaybe m) => t m a
+  nothing = lift nothing

@@ -7,55 +7,55 @@ packages:
 - completed:
     hackage: scalpel-0.6.2@sha256:5f9b4971c6b889048146260ef5c9e8b433785d3a3afe82115466f399b1b169de,1463
     pantry-tree:
-      size: 405
       sha256: 6d795b21d88ec3a23690a4d5cb24eb5e5775049a6d19bd1f4540738993bcdc24
+      size: 405
   original:
     hackage: scalpel-0.6.2
 - completed:
     hackage: parsec-3.1.15.1@sha256:8c7a36aaadff12a38817fc3c4ff6c87e3352cffd1a58df640de7ed7a97ad8fa3,4601
     pantry-tree:
-      size: 2630
       sha256: 147ad21b8aa90273721903a6b294cc4ecd660d229d88c4e84c6275bc5d630ae6
+      size: 2630
   original:
     hackage: parsec-3.1.15.1
 - completed:
     hackage: Cabal-3.6.3.0@sha256:ff97c442b0c679c1c9876acd15f73ac4f602b973c45bde42b43ec28265ee48f4,12459
     pantry-tree:
-      size: 19757
       sha256: b250a53bdb56844f047a2927833bb565b936a289abfa85dfc2a63148d776368a
+      size: 19757
   original:
     hackage: Cabal-3.6.3.0
 - completed:
     hackage: logict-0.7.1.0@sha256:e3c96033c5baf50eb61d65a22fad1809ffca29809345ad887d51ea6e570a141f,1641
     pantry-tree:
-      size: 502
       sha256: 0bf26bdd19540a6dbb7d4c8a0ef434df39626026245c026ce204e1f63575d754
+      size: 502
   original:
     hackage: logict-0.7.1.0
 - completed:
     hackage: sci-ratio-0.2.1.0@sha256:0ecd0f0a0077d21e0113da7cc4f9debf2cd3a575686d2c67e69ea2b8270ad197,1472
     pantry-tree:
-      size: 401
       sha256: 33c981b521725cd0c994de636f7ea98858337d1e4da89d359c2bc65d73af2550
+      size: 401
   original:
     hackage: sci-ratio-0.2.1.0
 - completed:
     hackage: megaparsec-9.5.0@sha256:e1e8f7b0f3b1abb120df5e61b71130a8ea3d7df3a9b4ad773025730eaa6970cd,3312
     pantry-tree:
-      size: 1591
       sha256: 337c06a763526ccddedc321625b90a09bc3a9a4dce135b20892c3b98f8f7a9f8
+      size: 1591
   original:
     hackage: megaparsec-9.5.0
 - completed:
     hackage: monad-st-0.2.4.1@sha256:cabbabb81b5f28a460937b1d224741060b63782cfc6d0f819d36860291026b05,926
     pantry-tree:
-      size: 269
       sha256: e0c0c2fa5940379c4b3901a71ad235df7ef17492f4bf3f27c2a1ea555e2da804
+      size: 269
   original:
     hackage: monad-st-0.2.4.1
 snapshots:
 - completed:
+    sha256: 428ec8d5ce932190d3cbe266b9eb3c175cd81e984babf876b64019e2cbe4ea68
     size: 590100
     url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/28.yaml
-    sha256: 428ec8d5ce932190d3cbe266b9eb3c175cd81e984babf876b64019e2cbe4ea68
   original: lts-18.28
