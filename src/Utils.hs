@@ -26,6 +26,7 @@ import Data.Maybe (catMaybes, mapMaybe, fromMaybe)
 import GHC.Real (Ratio((:%)))
 import GHC.Exts (IsList)
 import Control.Monad.Trans.Maybe (MaybeT (..))
+import Control.Applicative ((<|>), Alternative (empty))
 
 {-| Take a slice from the given string
 
@@ -247,10 +248,16 @@ class (Monad m) => Modifiable m r | m -> r where
     v <- readRef ref
     writeRef ref $ f v
 
--- instance (Monad m, MonadTrans t, Monad (t m), Modifiable m r) => Modifiable (t m) r where
---   newRef = lift . newRef
---   readRef = lift . readRef
---   writeRef ra a = lift $ writeRef ra a
+instance (Monad m, MonadTrans t, Monad (t m), Modifiable m r) => Modifiable (t m) r where
+  newRef :: (Monad m, MonadTrans t, Monad (t m), Modifiable m r) =>
+    a -> t m (r a)
+  newRef = lift . newRef
+  readRef :: (Monad m, MonadTrans t, Monad (t m), Modifiable m r) =>
+    r a -> t m a
+  readRef = lift . readRef
+  writeRef :: (Monad m, MonadTrans t, Monad (t m), Modifiable m r) =>
+    r a -> a -> t m ()
+  writeRef ra a = lift $ writeRef ra a
 
 infix 0 <<-
 -- | The infix synonym of `writeRef`
@@ -273,7 +280,7 @@ instance Modifiable (ST s) (STRef s) where
   writeRef :: STRef s a -> a -> ST s ()
   writeRef = writeSTRef
 
-instance (Monad m) => Modifiable (STT.STT s m) (STT.STRef s) where
+instance {-# OVERLAPPING #-} (Monad m) => Modifiable (STT.STT s m) (STT.STRef s) where
   newRef :: Monad m => a -> STT.STT s m (STRef s a)
   newRef = STT.newSTRef
   readRef :: Monad m => STRef s a -> STT.STT s m a
@@ -489,3 +496,6 @@ instance (MonadTrans t, Monad m, MonadMaybe m) => MonadMaybe (t m) where
   just a = lift $ just a
   nothing :: (MonadTrans t, Monad m, MonadMaybe m) => t m a
   nothing = lift nothing
+
+toLogicT :: (Foldable t, Alternative f) => t a -> f a
+toLogicT = foldr ((<|>) . pure) empty

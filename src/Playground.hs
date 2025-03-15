@@ -477,3 +477,35 @@ testContT2 = do
     liftIO $ putStrLn $ "Outside callCC result: " ++ show res
     return $ res + 1
   putStrLn $ "Final Result: " ++ show res
+
+infixl 8 *.
+
+-- prop> \(n :: Int) -> length ("a" *. n) == max n 0 
+-- +++ OK, passed 100 tests.
+(*.) :: (Num t, Ord t) => [a] -> t -> [a]
+lst *. n
+  | n <= 0 = []
+  | n == 1 = lst
+  | otherwise = lst ++ (lst *. (n - 1))
+
+-- >>> producer 5 1
+producer :: (Eq a, Num a, Show a) => a -> a -> String
+producer max i =
+  let this = i in
+  let that = if i - 1 == 0 then max else i - 1 in
+  genStr this that
+  where
+    indent = "    "
+    genStr this that = concatStr "\n"
+      [ "if (p" ++ show this ++ " == op" ++ show that ++ ") {"
+      , indent ++ "prob {"
+      , indent *. 2 ++ "0.5 : p" ++ show this ++ " = 0;"
+      , indent *. 2 ++ "0.5 : p" ++ show this ++ " = 1;"
+      , indent ++ "}"
+      , "}"
+      , "else {"
+      , indent ++ "p" ++ show this ++ " = op" ++ show that ++ ";"
+      , "}" ]
+
+printProducer :: IO ()
+printProducer = forM_ [1..5] $ putStrLn . producer 5

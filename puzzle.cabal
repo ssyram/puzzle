@@ -41,6 +41,7 @@ library
       Formula
       HORSTypingTest
       Lib
+      LoopQueue
       MHORS
       MonadTransformer
       MyData.Array

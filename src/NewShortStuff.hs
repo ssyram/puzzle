@@ -1,10 +1,10 @@
 {-# LANGUAGE BangPatterns #-}
+{-# OPTIONS_GHC -fno-defer-type-errors #-}
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# HLINT ignore "Use camelCase" #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE Strict #-}
 {-# LANGUAGE LambdaCase #-}
-{-# LANGUAGE KindSignatures #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE GADTs #-}
@@ -17,7 +17,7 @@ module NewShortStuff where
 
 import MyData.Array
 import qualified Data.HashTable.ST.Basic as HT
-import Utils (eIMPOSSIBLE, bothMap, Modifiable (newRef, readRef, writeRef, modifyRef), whenM, (<<-), (|>), slice, whileM, factorial, fstMap, isMatrix, lenEq, orM, andM)
+import Utils (eIMPOSSIBLE, bothMap, Modifiable (newRef, readRef, writeRef, modifyRef), whenM, (<<-), (|>), slice, whileM, factorial, fstMap, isMatrix, lenEq, orM, andM, toLogicT)
 import Data.List (sort, partition, isPrefixOf, (\\))
 import Test.QuickCheck (quickCheckWith, quickCheck, withMaxSuccess, Arbitrary (arbitrary), frequency, shuffle)
 import Debug.Trace (trace)
@@ -49,6 +49,9 @@ import qualified Data.Vector.Unboxed as DVU
 import qualified DataStructure.RBTree as RBT
 import Control.Applicative (Applicative(..), Alternative ((<|>)))
 import Data.Functor (($>))
+import qualified Data.Sequence as Seq
+import qualified Control.Monad.Logic as L
+import qualified TryLogict as L
 
 
 mergeTwoSorted :: Ord a => [a] -> [a] -> [a]
@@ -73,7 +76,10 @@ findNthSorted n l1 l2
   | otherwise = compute l2 l1
   where
     compute l1 l2
-      | startPoint > size l1 = error $ "Error at start point -- it is more than size of l1, start point = " ++ show startPoint
+      | startPoint > size l1 = 
+        error $ 
+          "Error at start point -- it is more than size of l1, start point = " ++ 
+          show startPoint
       | otherwise =
         Just $ loop startPoint (size l1)
       where
@@ -1284,4 +1290,43 @@ nStock prices n
 
 
 
+--------------------------------------- BFS Shortest Path ---------------------------------------
+
+
+
+bfsShortestPath :: (Hashable t2, Eq t2) => t2 -> t2 -> (t2 -> [t2]) -> [[t2]]
+bfsShortestPath src tar getNext = runST $ do
+  let q = Seq.empty Seq.|> src
+  visited <- HT.new
+  pred <- HT.new
+  HT.insert visited src (0 :: Int)
+  loop pred visited q getNext
+  dfsPaths pred src tar
+  where
+    -- dfsPaths :: (Hashable t2, Eq t2) => HT.HashTable s t2 [t2] -> t2 -> t2 -> ST s [[t2]]
+    dfsPaths pred src node
+      | node == src = return [[src]]
+      | otherwise   = do
+        val <- fromMaybe [] <$> HT.lookup pred node
+        L.observeAllT $ do
+          n <- toLogicT val
+          val <- toLogicT =<< liftST (dfsPaths pred src n)
+          return $ node:val
+    -- loop :: (Hashable t2, Eq t2) => HT.HashTable s t2 [t2]
+    --   -> HT.HashTable s t2 Int -> Seq.Seq t2 -> (t2 -> [t2]) -> ST s ()
+    loop pred visited q getNext = case Seq.viewl q of
+      Seq.EmptyL   -> return ()
+      node Seq.:< q' -> do
+        lv <- fromJust <$> HT.lookup visited node
+        q' <- foldM (folder (node, lv) pred visited) q' (getNext node)
+        loop pred visited q' getNext
+    folder (pNode, pLv) pred visited q node =
+      HT.lookup visited node >>= \case
+        Just lv | lv == pLv + 1 -> do addToPred pred node pNode; return q
+        Just _  -> return q
+        Nothing -> do HT.insert visited node (pLv + 1); return $ q Seq.|> node
+    addToPred pred node pNode = do
+      HT.mutate pred node $ \case
+        Nothing  -> (Just [pNode], ())
+        Just lst -> (Just (pNode:lst), ())
 
